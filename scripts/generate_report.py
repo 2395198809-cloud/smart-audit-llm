@@ -1,0 +1,126 @@
+import json
+from pathlib import Path
+
+CONTRACT_PATH = Path("src/VulnerableVault.sol")
+SLITHER_PATH = Path("slither-output.json")
+REPORT_PATH = Path("reports/audit_report.md")
+
+
+def load_slither_findings():
+    data = json.loads(SLITHER_PATH.read_text(encoding="utf-8"))
+    return data.get("results", {}).get("detectors", [])
+
+
+def main():
+    contract_code = CONTRACT_PATH.read_text(encoding="utf-8")
+    findings = load_slither_findings()
+
+    lines = []
+    lines.append("# 智能合约自动审计报告")
+    lines.append("")
+    lines.append("## 1. 审计对象")
+    lines.append("")
+    lines.append(f"- 合约文件：`{CONTRACT_PATH}`")
+    lines.append(f"- Slither 告警数量：`{len(findings)}`")
+    lines.append("")
+    lines.append("## 2. Slither 检测结果")
+    lines.append("")
+
+    if not findings:
+        lines.append("Slither 未发现明显问题。")
+    else:
+        for i, finding in enumerate(findings, 1):
+            check = finding.get("check", "unknown")
+            impact = finding.get("impact", "unknown")
+            confidence = finding.get("confidence", "unknown")
+            description = finding.get("description", "").strip()
+
+            lines.append(f"### 2.{i} {check}")
+            lines.append("")
+            lines.append(f"- 风险等级：`{impact}`")
+            lines.append(f"- 置信度：`{confidence}`")
+            lines.append("")
+            lines.append("Slither 原始描述：")
+            lines.append("")
+            lines.append("```text")
+            lines.append(description)
+            lines.append("```")
+            lines.append("")
+
+            if "reentrancy" in check.lower() or "Reentrancy" in description:
+                lines.append("## 3. 漏洞解释：重入攻击")
+                lines.append("")
+                lines.append("该合约的 `withdraw()` 函数存在典型重入风险。")
+                lines.append("函数在向 `msg.sender` 执行外部转账之后，才将 `balances[msg.sender]` 清零。")
+                lines.append("攻击者可以部署恶意合约，在 `receive()` 回调函数中再次调用 `withdraw()`。")
+                lines.append("由于余额尚未清零，攻击者可以重复提款。")
+                lines.append("")
+                lines.append("危险代码模式如下：")
+                lines.append("")
+                lines.append("```solidity")
+                lines.append('(bool ok, ) = msg.sender.call{value: amount}("");')
+                lines.append('require(ok, "transfer failed");')
+                lines.append("")
+                lines.append("balances[msg.sender] = 0;")
+                lines.append("```")
+                lines.append("")
+                lines.append("## 4. 攻击路径")
+                lines.append("")
+                lines.append("1. 攻击者向合约存入少量 ETH。")
+                lines.append("2. 攻击者调用 `withdraw()`。")
+                lines.append("3. 合约向攻击者合约转账。")
+                lines.append("4. 攻击者合约的 `receive()` 被触发。")
+                lines.append("5. `receive()` 中再次调用 `withdraw()`。")
+                lines.append("6. 因为余额尚未清零，攻击者可以重复提取资金。")
+                lines.append("")
+                lines.append("## 5. 影响")
+                lines.append("")
+                lines.append("攻击者可能提取超过自己存款的 ETH，导致其他用户存入合约的资产被盗。")
+                lines.append("")
+                lines.append("## 6. 修复建议")
+                lines.append("")
+                lines.append("应遵循 Checks-Effects-Interactions 模式：先检查条件，再更新状态，最后执行外部调用。")
+                lines.append("")
+                lines.append("修复方式如下：")
+                lines.append("")
+                lines.append("```solidity")
+                lines.append("function withdraw() external {")
+                lines.append("    uint256 amount = balances[msg.sender];")
+                lines.append('    require(amount > 0, "no balance");')
+                lines.append("")
+                lines.append("    balances[msg.sender] = 0;")
+                lines.append("")
+                lines.append('    (bool ok, ) = msg.sender.call{value: amount}("");')
+                lines.append('    require(ok, "transfer failed");')
+                lines.append("}")
+                lines.append("```")
+                lines.append("")
+                lines.append("也可以使用 OpenZeppelin 的 `ReentrancyGuard`。")
+                lines.append("")
+                lines.append("## 7. PoC 验证")
+                lines.append("")
+                lines.append("当前项目中的 Foundry 测试 `test/VulnerableVault.t.sol` 已经验证该漏洞可被利用。")
+                lines.append("")
+                lines.append("运行：")
+                lines.append("")
+                lines.append("```bash")
+                lines.append("forge test -vv")
+                lines.append("```")
+                lines.append("")
+                lines.append("如果 `testReentrancyAttack()` 通过，说明攻击 PoC 成功。")
+                lines.append("")
+
+    lines.append("## 附录：被审计合约源码")
+    lines.append("")
+    lines.append("```solidity")
+    lines.append(contract_code)
+    lines.append("```")
+
+    REPORT_PATH.parent.mkdir(exist_ok=True)
+    REPORT_PATH.write_text("\n".join(lines), encoding="utf-8")
+
+    print(f"report written to {REPORT_PATH}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,54 @@
+# Foundry
+out/
+cache/
+broadcast/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+*.log
+
+# Generated LLM artifacts
+auto_llm_artifacts/
+candidates/
+candidates_wallet/
+reports/candidate_slither/
+reports/candidate_wallet_slither/
+reports/auto_llm/*-raw-output-*.md
+reports/auto_llm/*-slither-output.json
+reports/auto_llm/*-fixed-slither.json
+
+# Slither generated json
+*-slither-output.json
+slither-output.json
+fixed-slither-output.json
+llm-fixed-slither-output.json
+wallet-slither-output.json
+fixed-wallet-slither-output.json
+llm-fixed-wallet-slither-output.json
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local backups
+backups/
+
+# Optional generated reports/data
+reports/**/*.json
+reports/**/*raw-output*.md
+reports/auto_llm/*-fixed-slither.json
+reports/auto_llm/*-slither-output.json
+
+# Temporary verification files
+src/LLMAutoFixed.sol
+test/LLMAutoAttack.t.sol
+test/LLMAutoValidation.t.sol
