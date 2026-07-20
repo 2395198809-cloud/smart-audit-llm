@@ -1,0 +1,22 @@
+# 聚焦问题量化对比报告
+
+聚焦问题：面向未授权代币转移漏洞的 LLM 辅助智能合约审计、验证与修复闭环。
+
+样本：`benchmarks/gptscan/UnauthorizedTokenTransfer.sol`
+
+| 方法 | 年份 | 类型 | 漏洞识别 | 函数定位 | 攻击PoC | 修复补丁 | 修复验证 | 中文报告 | 备注 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Slither | 2019 | 静态分析 | 否 | 否 | 否 | 否 | 否 | 否 | 该业务逻辑漏洞无稳定目标detector |
+| GPTScan | 2024 | LLM+程序分析 | 是 | 是 | 否 | 否 | 否 | 否 | 能识别UnauthorizedTransfer但不生成补丁 |
+| 本文系统 | 2026 | Slither+LLM+Foundry | 是 | 是 | 是 | 是 | 是 | 是 | 目标告警消失记为不适用，核心看Foundry验证 |
+| ItyFuzz | 2023 | 快照式fuzzing | 相关方法 | 依赖oracle | 可触发交易序列 | 否 | 需额外性质 | 否 | 动态状态探索代表 |
+| LLM4Fuzz | 2024 | LLM辅助fuzzing | 相关方法 | 依赖LLM和fuzz结果 | 偏输入生成 | 通常否 | 通常否 | 否 | LLM辅助测试代表 |
+| SmartBugs 2.0 | 2023 | 评测框架 | 不直接检测 | 不直接定位 | 否 | 否 | 否 | 否 | 用于统一组织量化实验 |
+
+## 结论
+
+GPTScan 能识别 Unauthorized Transfer 并定位 transfer 函数。
+
+本文系统进一步生成中文报告、Foundry攻击PoC、修复补丁和修复验证测试。
+
+Slither 对该业务逻辑漏洞没有稳定目标告警，因此目标告警消失率应记为不适用。
