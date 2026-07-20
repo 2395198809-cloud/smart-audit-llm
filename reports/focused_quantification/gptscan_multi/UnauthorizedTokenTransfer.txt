@@ -1,0 +1,127 @@
+
+
+  .oooooo.    ooooooooo.   ooooooooooooo  .oooooo..o                                 
+ d8P'  `Y8b   `888   `Y88. 8'   888   `8 d8P'    `Y8                                 
+888            888   .d88'      888      Y88bo.       .ooooo.   .oooo.   ooo. .oo.   
+888            888ooo88P'       888       `"Y8888o.  d88' `"Y8 `P  )88b  `888P"Y88b  
+888     ooooo  888              888           `"Y88b 888        .oP"888   888   888  
+`88.    .88'   888              888      oo     .d8P 888   .o8 d8(  888   888   888  
+ `Y8bood8P'   o888o            o888o     8""88888P'  `Y8bod8P' `Y888""8o o888o o888o                                    
+
+
+                                                                   
+
+[19:18:32] Loaded 10 rules                                                                                  tasks.py:121
+[07/20/26 19:18:32] INFO     CryticCompile: 'solc --version' running                                         solc.py:374
+                    INFO     CryticCompile: 'solc                                                            solc.py:540
+                             ../samples/UnauthorizedTokenTransfer/UnauthorizedTokenTransfer.sol                         
+                             --combined-json                                                                            
+                             abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes                        
+                             --allow-paths .,/home/tianlang/GPTScan/samples/UnauthorizedTokenTransfer'                  
+                             running                                                                                    
+╭───────────────────────────────────────────── Multiple Choice Scenarios ──────────────────────────────────────────────╮
+│ Knowledge: have code statements that get or calculate LP token's value/price                                         │
+│ involve transfering token from an address different from message sender                                              │
+│ Code:                                                                                                                │
+│     function transfer(address from, address to, uint256 amount) external returns (bool) {                            │
+│         require(to != address(0), "zero address");                                                                   │
+│         require(balanceOf >= amount, "insufficient balance");                                                        │
+│                                                                                                                      │
+│         balanceOf -= amount;                                                                                         │
+│         balanceOf += amount;                                                                                         │
+│                                                                                                                      │
+│         emit Transfer(from, to, amount);                                                                             │
+│         return true;                                                                                                 │
+│     }                                                                                                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Response ──────────────────────────────────────────────────────╮
+│ {"1": "No", "2": "Yes"}                                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────── Single Choice Scenario ───────────────────────────────────────────────╮
+│ Knowledge: involve transfering token from an address different from message sender and there is no check of          │
+│ allowance/approval from the address owner                                                                            │
+│ Code:                                                                                                                │
+│     function transfer(address from, address to, uint256 amount) external returns (bool) {                            │
+│         require(to != address(0), "zero address");                                                                   │
+│         require(balanceOf >= amount, "insufficient balance");                                                        │
+│                                                                                                                      │
+│         balanceOf -= amount;                                                                                         │
+│         balanceOf += amount;                                                                                         │
+│                                                                                                                      │
+│         emit Transfer(from, to, amount);                                                                             │
+│         return true;                                                                                                 │
+│     }                                                                                                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Response ──────────────────────────────────────────────────────╮
+│ Yes                                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────── Response ──────────────────────────────────────────────────────╮
+│ {"VariableA":{"from":"The variable that holds the sender's address in the transfer function"}}                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+      has_eq_check       
+┏━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Argument ┃ Value      ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ arg[0]   │ from       │
+│ arg[1]   │ msg.sender │
+└──────────┴────────────┘
+                                                      Scan Results                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Type                  ┃ Description                                  ┃ Affected Files                                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Unauthorized Transfer │ The contract allows transferring tokens from │ ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓ │
+│                       │ an address different from the message sender │ ┃ File Path     ┃ Line Range ┃ Code         ┃ │
+│                       │ without checking the approval of the address │ ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩ │
+│                       │ owner.                                       │ │ /home/tianla… │ 14 - 23    │     function │ │
+│                       │                                              │ │               │            │ transfer(ad… │ │
+│                       │                                              │ │               │            │ from,        │ │
+│                       │                                              │ │               │            │ address to,  │ │
+│                       │                                              │ │               │            │ uint256      │ │
+│                       │                                              │ │               │            │ amount)      │ │
+│                       │                                              │ │               │            │ external     │ │
+│                       │                                              │ │               │            │ returns      │ │
+│                       │                                              │ │               │            │ (bool) {     │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         req… │ │
+│                       │                                              │ │               │            │ !=           │ │
+│                       │                                              │ │               │            │ address(0),  │ │
+│                       │                                              │ │               │            │ "zero        │ │
+│                       │                                              │ │               │            │ address");   │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         req… │ │
+│                       │                                              │ │               │            │ >= amount,   │ │
+│                       │                                              │ │               │            │ "insufficie… │ │
+│                       │                                              │ │               │            │ balance");   │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         bal… │ │
+│                       │                                              │ │               │            │ -= amount;   │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         bal… │ │
+│                       │                                              │ │               │            │ += amount;   │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         emit │ │
+│                       │                                              │ │               │            │ Transfer(fr… │ │
+│                       │                                              │ │               │            │ to, amount); │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │         ret… │ │
+│                       │                                              │ │               │            │ true;        │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ │               │            │     }        │ │
+│                       │                                              │ │               │            │              │ │
+│                       │                                              │ └───────────────┴────────────┴──────────────┘ │
+└───────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────────┘
+                   Summary                   
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃ Key                  ┃ Value              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ Files                │ 1                  │
+│ Contracts            │ 1                  │
+│ Functions            │ 1                  │
+│ Lines of Code        │ 24                 │
+│ Used Time            │ 30.238721132278442 │
+│ Estimated Cost (USD) │ 0.001015           │
+└──────────────────────┴────────────────────┘

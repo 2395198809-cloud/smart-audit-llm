@@ -1,0 +1,8 @@
+[32mWelcome to SmartBugs 2.1.1![0m
+Collecting files ...
+1 files to analyse
+Assembling tasks ...
+1 tasks to execute
+Starting task 1/1: [36mslither-0.11.3[0m and [34m/home/tianlang/smart-audit-llm/benchmarks/gptscan/OnlyToCheckedTransfer.sol[0m
+1/1 completed, ETC 0:00:00
+Analysis completed in 0:00:02.

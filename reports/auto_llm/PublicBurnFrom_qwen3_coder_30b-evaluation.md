@@ -1,8 +1,8 @@
 # Auto LLM产物评估报告
 
-产物目录：`auto_llm_artifacts/UnauthorizedTokenTransfer_qwen3_coder_30b`
+产物目录：`auto_llm_artifacts/PublicBurnFrom_qwen3_coder_30b`
 
-原始Slither结果：`reports/auto_llm/UnauthorizedTokenTransfer-slither-output.json`
+原始Slither结果：`reports/auto_llm/PublicBurnFrom-slither-output.json`
 原始检测项：`solc-version`
 目标检测项：`未识别`
 
@@ -18,7 +18,7 @@
 ## forge build
 ```text
 Compiling 38 files with Solc 0.8.35
-Solc 0.8.35 finished in 529.62ms
+Solc 0.8.35 finished in 515.17ms
 Compiler run successful with warnings:
 Warning (9302): Return value of low-level calls not used.
   --> benchmarks/smartbugs/UncheckedCall.sol:20:9:
@@ -31,11 +31,11 @@ Warning (9302): Return value of low-level calls not used.
 ```text
 No files changed, compilation skipped
 
-Ran 1 test for test/LLMAutoAttack.t.sol:UnauthorizedTokenTransferAttackTest
-[PASS] testUnauthorisedTransfer() (gas: 42125)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.70ms (280.81µs CPU time)
+Ran 1 test for test/LLMAutoAttack.t.sol:PublicBurnFromAttackTest
+[PASS] testBurnFromWithoutAuthorization() (gas: 30607)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 470.83µs (51.18µs CPU time)
 
-Ran 1 test suite in 42.96ms (3.70ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 4.97ms (470.83µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 ```
 
 ## LLM生成修复验证测试
@@ -43,11 +43,11 @@ Ran 1 test suite in 42.96ms (3.70ms CPU time): 1 tests passed, 0 failed, 0 skipp
 No files changed, compilation skipped
 
 Ran 2 tests for test/LLMAutoValidation.t.sol:LLMAutoFixedValidationTest
-[PASS] testNormalTransfer() (gas: 43445)
-[PASS] testUnauthorisedTransferFails() (gas: 18838)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.88ms (2.32ms CPU time)
+[PASS] testBurnFromWithApproval() (gas: 55867)
+[PASS] testBurnFromWithoutApprovalShouldFail() (gas: 18973)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 849.35µs (220.36µs CPU time)
 
-Ran 1 test suite in 4.71ms (1.88ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 4.83ms (849.35µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 ```
 
 ## Slither重扫LLM补丁

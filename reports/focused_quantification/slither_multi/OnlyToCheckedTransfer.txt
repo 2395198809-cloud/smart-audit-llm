@@ -1,0 +1,13 @@
+'forge clean' running (wd: /home/tianlang/smart-audit-llm)
+'forge config --json' running
+'forge build --build-info benchmarks/gptscan/OnlyToCheckedTransfer.sol' running (wd: /home/tianlang/smart-audit-llm)
+
+Detector: solc-version
+Version constraint ^0.8.19 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+	- VerbatimInvalidDeduplication
+	- FullInlinerNonExpressionSplitArgumentEvaluationOrder
+	- MissingSideEffectsOnSelectorAccess.
+It is used by:
+	- ^0.8.19 (benchmarks/gptscan/OnlyToCheckedTransfer.sol#2)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+benchmarks/gptscan/OnlyToCheckedTransfer.sol analyzed (1 contracts with 101 detectors), 1 result(s) found

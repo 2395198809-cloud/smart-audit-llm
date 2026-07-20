@@ -1,0 +1,24 @@
+[32mWelcome to SmartBugs 2.1.1![0m
+Collecting files ...
+1 files to analyse
+Assembling tasks ...
+1 tasks to execute
+Starting task 1/1: [36msemgrep-unauth-transfer[0m and [34m/home/tianlang/smart-audit-llm/benchmarks/gptscan/MissingAllowanceTransferFrom.sol[0m
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/tianlang/smartbugs/sb/analysis.py", line 184, in analyser
+    duration = execute(task)
+  File "/home/tianlang/smartbugs/sb/analysis.py", line 99, in execute
+    exit_code, tool_log, tool_output, sb_bin_log, docker_args = sb.docker.execute(task)
+  File "/home/tianlang/smartbugs/sb/docker.py", line 106, in execute
+    sbdir = __docker_volume(task)
+  File "/home/tianlang/smartbugs/sb/docker.py", line 74, in __docker_volume
+    shutil.copytree(task.tool.absbin, sbdir_bin)
+  File "/usr/lib/python3.10/shutil.py", line 557, in copytree
+    with os.scandir(src) as itr:
+FileNotFoundError: [Errno 2] No such file or directory: '/scripts'
+Analysis completed in 0:00:02.
