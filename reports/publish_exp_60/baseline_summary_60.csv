@@ -1,0 +1,5 @@
+method,samples,ok,tp,fp,tn,fn,precision,recall,f1,avg_seconds,min_seconds,max_seconds
+slither,60,0,40,20,0,0,66.67,100.00,80.00,0.269,0.229,0.606
+smartbugs2_slither,60,0,40,20,0,0,66.67,100.00,80.00,2.423,-0.006,4.447
+gptscan,60,60,40,20,0,0,66.67,100.00,80.00,4.984,-1.027,155.779
+semgrep_custom,60,0,40,20,0,0,66.67,100.00,80.00,2.349,0.533,3.783

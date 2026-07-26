@@ -1,0 +1,42 @@
+{
+  "rules": [
+    {
+      "id": "unauth-balance-decrease-simple",
+      "message": "potential unauthorized asset state change",
+      "languages": [
+        "solidity"
+      ],
+      "severity": "ERROR",
+      "patterns": [
+        {
+          "pattern-either": [
+            {
+              "pattern": "balanceOf[$FROM] -= $AMOUNT;"
+            },
+            {
+              "pattern": "balances[$FROM] -= $AMOUNT;"
+            },
+            {
+              "pattern": "_balances[$FROM] -= $AMOUNT;"
+            },
+            {
+              "pattern": "shares[$FROM] -= $AMOUNT;"
+            },
+            {
+              "pattern": "balanceOf[$ID][$FROM] -= $AMOUNT;"
+            },
+            {
+              "pattern": "balanceOf[$FROM][$ID] -= $AMOUNT;"
+            },
+            {
+              "pattern": "ownerOf[$TOKENID] = $TO;"
+            },
+            {
+              "pattern": "_owners[$TOKENID] = $TO;"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,266 @@
+# 60样本基线实验严格汇总
+
+说明：本汇总不再使用路径/函数名关键词粗略 grep，而是按各工具结果文件解析目标相关漏洞输出。
+
+## 总体结果
+
+| 方法 | 样本数 | 运行完成率 | 漏洞识别率 | 安全样本误报率 | Precision | Recall | F1 | 平均耗时/s | 最短/s | 最长/s |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| slither | 60 | 60/60 = 100.0% | 0/40 = 0.0% | 0/20 = 0.0% | 0.0% | 0.0% | 0.0% | 0.269 | 0.229 | 0.606 |
+| smartbugs2_slither | 60 | 60/60 = 100.0% | 0/40 = 0.0% | 0/20 = 0.0% | 0.0% | 0.0% | 0.0% | 2.464 | 0.545 | 4.447 |
+| gptscan | 60 | 60/60 = 100.0% | 3/40 = 7.5% | 0/20 = 0.0% | 100.0% | 7.5% | 14.0% | 5.086 | 0.626 | 155.779 |
+| semgrep_custom | 60 | 60/60 = 100.0% | 40/40 = 100.0% | 20/20 = 100.0% | 66.7% | 100.0% | 80.0% | 2.643 | 1.206 | 2.928 |
+
+## 混淆矩阵
+
+| 方法 | TP | FP | TN | FN |
+|---|---:|---:|---:|---:|
+| slither | 0 | 0 | 20 | 40 |
+| smartbugs2_slither | 0 | 0 | 20 | 40 |
+| gptscan | 3 | 0 | 20 | 37 |
+| semgrep_custom | 40 | 20 | 0 | 0 |
+
+## 每个样本严格检测情况
+
+| 样本 | 类型 | 方法 | 原状态码 | 运行完成 | 严格目标检测 | 耗时/s |
+|---|---|---|---:|---:|---:|---:|
+| UnauthorizedTokenTransfer | vulnerable | slither | 255 | 1 | 0 | 0.606 |
+| UnauthorizedTokenTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.097 |
+| UnauthorizedTokenTransfer | vulnerable | gptscan | 0 | 1 | 1 | 155.779 |
+| MissingAllowanceTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.599 |
+| MissingAllowanceTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.945 |
+| MissingAllowanceTransferFrom | vulnerable | gptscan | 0 | 1 | 1 | 9.152 |
+| WrongAllowanceOwner | vulnerable | slither | 255 | 1 | 0 | 0.279 |
+| WrongAllowanceOwner | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.847 |
+| WrongAllowanceOwner | vulnerable | gptscan | 0 | 1 | 0 | 3.254 |
+| OnlyToCheckedTransfer | vulnerable | slither | 255 | 1 | 0 | 0.284 |
+| OnlyToCheckedTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.091 |
+| OnlyToCheckedTransfer | vulnerable | gptscan | 0 | 1 | 0 | 3.224 |
+| PublicBurnFrom | vulnerable | slither | 255 | 1 | 0 | 0.254 |
+| PublicBurnFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.179 |
+| PublicBurnFrom | vulnerable | gptscan | 0 | 1 | 1 | 21.561 |
+| UncheckedOperatorTransfer | vulnerable | slither | 255 | 1 | 0 | 0.303 |
+| UncheckedOperatorTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.070 |
+| UncheckedOperatorTransfer | vulnerable | gptscan | 0 | 1 | 0 | 3.009 |
+| BatchTransferFromMissingAuth | vulnerable | slither | 255 | 1 | 0 | 0.315 |
+| BatchTransferFromMissingAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.541 |
+| BatchTransferFromMissingAuth | vulnerable | gptscan | 0 | 1 | 0 | 2.944 |
+| ApproveAndCallWrongSpender | vulnerable | slither | 255 | 1 | 0 | 0.259 |
+| ApproveAndCallWrongSpender | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.004 |
+| ApproveAndCallWrongSpender | vulnerable | gptscan | 0 | 1 | 0 | 2.634 |
+| InternalMoveExposed | vulnerable | slither | 255 | 1 | 0 | 0.278 |
+| InternalMoveExposed | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.892 |
+| InternalMoveExposed | vulnerable | gptscan | 0 | 1 | 0 | 1.271 |
+| RoleBypassTransfer | vulnerable | slither | 255 | 1 | 0 | 0.262 |
+| RoleBypassTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.280 |
+| RoleBypassTransfer | vulnerable | gptscan | 0 | 1 | 0 | 2.965 |
+| PermitNonceMissingTransfer | vulnerable | slither | 255 | 1 | 0 | 0.259 |
+| PermitNonceMissingTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.398 |
+| PermitNonceMissingTransfer | vulnerable | gptscan | 0 | 1 | 0 | 3.112 |
+| DelegatedTransferMissingAuth | vulnerable | slither | 255 | 1 | 0 | 0.264 |
+| DelegatedTransferMissingAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.828 |
+| DelegatedTransferMissingAuth | vulnerable | gptscan | 0 | 1 | 0 | 3.113 |
+| VaultWithdrawFromMissingAuth | vulnerable | slither | 255 | 1 | 0 | 0.294 |
+| VaultWithdrawFromMissingAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 0.545 |
+| VaultWithdrawFromMissingAuth | vulnerable | gptscan | 0 | 1 | 0 | 0.911 |
+| NFTTransferFromMissingApproval | vulnerable | slither | 255 | 1 | 0 | 0.267 |
+| NFTTransferFromMissingApproval | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.243 |
+| NFTTransferFromMissingApproval | vulnerable | gptscan | 0 | 1 | 0 | 0.775 |
+| ERC1155TransferMissingOperator | vulnerable | slither | 255 | 1 | 0 | 0.284 |
+| ERC1155TransferMissingOperator | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.146 |
+| ERC1155TransferMissingOperator | vulnerable | gptscan | 0 | 1 | 0 | 0.856 |
+| SafeTransferFromWithAllowance | safe | slither | 255 | 1 | 0 | 0.273 |
+| SafeTransferFromWithAllowance | safe | smartbugs2_slither | 1 | 1 | 0 | 2.447 |
+| SafeTransferFromWithAllowance | safe | gptscan | 0 | 1 | 0 | 3.146 |
+| SafeBurnFromWithAllowance | safe | slither | 255 | 1 | 0 | 0.257 |
+| SafeBurnFromWithAllowance | safe | smartbugs2_slither | 1 | 1 | 0 | 2.466 |
+| SafeBurnFromWithAllowance | safe | gptscan | 0 | 1 | 0 | 3.507 |
+| SafeBatchTransferFrom | safe | slither | 255 | 1 | 0 | 0.298 |
+| SafeBatchTransferFrom | safe | smartbugs2_slither | 1 | 1 | 0 | 2.083 |
+| SafeBatchTransferFrom | safe | gptscan | 0 | 1 | 0 | 3.137 |
+| SafeInternalMove | safe | slither | 255 | 1 | 0 | 0.239 |
+| SafeInternalMove | safe | smartbugs2_slither | 1 | 1 | 0 | 2.208 |
+| SafeInternalMove | safe | gptscan | 0 | 1 | 0 | 3.034 |
+| SafeRoleCheckedTransfer | safe | slither | 255 | 1 | 0 | 0.275 |
+| SafeRoleCheckedTransfer | safe | smartbugs2_slither | 1 | 1 | 0 | 2.578 |
+| SafeRoleCheckedTransfer | safe | gptscan | 0 | 1 | 0 | 2.977 |
+| OZERC20MissingAllowanceTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.237 |
+| OZERC20MissingAllowanceTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.252 |
+| OZERC20MissingAllowanceTransferFrom | vulnerable | gptscan | 0 | 1 | 0 | 2.829 |
+| OZERC20WrongAllowanceOwnerRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.264 |
+| OZERC20WrongAllowanceOwnerRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | -0.006 |
+| OZERC20WrongAllowanceOwnerRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.601 |
+| OZERC20AllowanceNotDecreasedRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.259 |
+| OZERC20AllowanceNotDecreasedRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.824 |
+| OZERC20AllowanceNotDecreasedRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.590 |
+| OZERC20PublicBurnFromRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.255 |
+| OZERC20PublicBurnFromRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.385 |
+| OZERC20PublicBurnFromRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 3.378 |
+| OZERC20PermitNoSignatureRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.253 |
+| OZERC20PermitNoSignatureRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.601 |
+| OZERC20PermitNoSignatureRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.912 |
+| UniswapV2MissingAllowanceTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.254 |
+| UniswapV2MissingAllowanceTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 4.447 |
+| UniswapV2MissingAllowanceTransferFrom | vulnerable | gptscan | 0 | 1 | 0 | 0.798 |
+| UniswapV2WrongAllowanceOwner | vulnerable | slither | 255 | 1 | 0 | 0.293 |
+| UniswapV2WrongAllowanceOwner | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.003 |
+| UniswapV2WrongAllowanceOwner | vulnerable | gptscan | 0 | 1 | 0 | 0.754 |
+| UniswapV2AllowanceNotDecreased | vulnerable | slither | 255 | 1 | 0 | 0.265 |
+| UniswapV2AllowanceNotDecreased | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.096 |
+| UniswapV2AllowanceNotDecreased | vulnerable | gptscan | 0 | 1 | 0 | 0.809 |
+| SolmateERC20MissingAllowanceTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.230 |
+| SolmateERC20MissingAllowanceTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.061 |
+| SolmateERC20MissingAllowanceTransferFrom | vulnerable | gptscan | 0 | 1 | 0 | 2.752 |
+| SolmateERC20PublicBurnFrom | vulnerable | slither | 255 | 1 | 0 | 0.244 |
+| SolmateERC20PublicBurnFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.562 |
+| SolmateERC20PublicBurnFrom | vulnerable | gptscan | 0 | 1 | 0 | 3.502 |
+| OZERC721MissingApprovalTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.231 |
+| OZERC721MissingApprovalTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.636 |
+| OZERC721MissingApprovalTransferFrom | vulnerable | gptscan | 0 | 1 | 0 | 0.857 |
+| OZERC721WrongOperatorDirection | vulnerable | slither | 255 | 1 | 0 | 0.264 |
+| OZERC721WrongOperatorDirection | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.338 |
+| OZERC721WrongOperatorDirection | vulnerable | gptscan | 0 | 1 | 0 | -1.027 |
+| OZERC721PublicBurnFrom | vulnerable | slither | 255 | 1 | 0 | 0.243 |
+| OZERC721PublicBurnFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.732 |
+| OZERC721PublicBurnFrom | vulnerable | gptscan | 0 | 1 | 0 | 0.805 |
+| SolmateERC721MissingApprovalTransferFrom | vulnerable | slither | 255 | 1 | 0 | 0.237 |
+| SolmateERC721MissingApprovalTransferFrom | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.378 |
+| SolmateERC721MissingApprovalTransferFrom | vulnerable | gptscan | 0 | 1 | 0 | 0.824 |
+| SolmateERC721WrongOperatorDirection | vulnerable | slither | 255 | 1 | 0 | 0.262 |
+| SolmateERC721WrongOperatorDirection | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.840 |
+| SolmateERC721WrongOperatorDirection | vulnerable | gptscan | 0 | 1 | 0 | 0.753 |
+| OZERC1155MissingOperatorSafeTransfer | vulnerable | slither | 255 | 1 | 0 | 0.253 |
+| OZERC1155MissingOperatorSafeTransfer | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.148 |
+| OZERC1155MissingOperatorSafeTransfer | vulnerable | gptscan | 0 | 1 | 0 | 2.918 |
+| OZERC1155WrongOperatorDirection | vulnerable | slither | 255 | 1 | 0 | 0.265 |
+| OZERC1155WrongOperatorDirection | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.775 |
+| OZERC1155WrongOperatorDirection | vulnerable | gptscan | 0 | 1 | 0 | 1.052 |
+| OZERC1155BatchMissingOperatorRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.234 |
+| OZERC1155BatchMissingOperatorRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.305 |
+| OZERC1155BatchMissingOperatorRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.666 |
+| OZERC4626WithdrawMissingOwnerAuth | vulnerable | slither | 255 | 1 | 0 | 0.229 |
+| OZERC4626WithdrawMissingOwnerAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 3.422 |
+| OZERC4626WithdrawMissingOwnerAuth | vulnerable | gptscan | 0 | 1 | 0 | 0.799 |
+| OZERC4626WithdrawWrongOwnerAuth | vulnerable | slither | 255 | 1 | 0 | 0.283 |
+| OZERC4626WithdrawWrongOwnerAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.778 |
+| OZERC4626WithdrawWrongOwnerAuth | vulnerable | gptscan | 0 | 1 | 0 | 0.805 |
+| OZERC4626WithdrawAllowanceNotDecreased | vulnerable | slither | 255 | 1 | 0 | 0.245 |
+| OZERC4626WithdrawAllowanceNotDecreased | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.953 |
+| OZERC4626WithdrawAllowanceNotDecreased | vulnerable | gptscan | 0 | 1 | 0 | 0.753 |
+| AccessControlRoleBypassTransferRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.244 |
+| AccessControlRoleBypassTransferRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 1.362 |
+| AccessControlRoleBypassTransferRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.852 |
+| AccessControlWrongRoleTransferRealCrop | vulnerable | slither | 255 | 1 | 0 | 0.248 |
+| AccessControlWrongRoleTransferRealCrop | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.337 |
+| AccessControlWrongRoleTransferRealCrop | vulnerable | gptscan | 0 | 1 | 0 | 2.899 |
+| CompoundStyleTransferFromWrongSpender | vulnerable | slither | 255 | 1 | 0 | 0.244 |
+| CompoundStyleTransferFromWrongSpender | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.458 |
+| CompoundStyleTransferFromWrongSpender | vulnerable | gptscan | 0 | 1 | 0 | 2.705 |
+| AaveVaultWithdrawFromMissingAuth | vulnerable | slither | 255 | 1 | 0 | 0.231 |
+| AaveVaultWithdrawFromMissingAuth | vulnerable | smartbugs2_slither | 1 | 1 | 0 | 2.559 |
+| AaveVaultWithdrawFromMissingAuth | vulnerable | gptscan | 0 | 1 | 0 | 0.831 |
+| OZERC20SafeTransferFromRealCrop | safe | slither | 255 | 1 | 0 | 0.242 |
+| OZERC20SafeTransferFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.076 |
+| OZERC20SafeTransferFromRealCrop | safe | gptscan | 0 | 1 | 0 | 2.875 |
+| UniswapV2SafeTransferFromRealCrop | safe | slither | 255 | 1 | 0 | 0.252 |
+| UniswapV2SafeTransferFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 3.754 |
+| UniswapV2SafeTransferFromRealCrop | safe | gptscan | 0 | 1 | 0 | 0.793 |
+| SolmateERC20SafeTransferFromRealCrop | safe | slither | 255 | 1 | 0 | 0.253 |
+| SolmateERC20SafeTransferFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 3.640 |
+| SolmateERC20SafeTransferFromRealCrop | safe | gptscan | 0 | 1 | 0 | 2.785 |
+| OZERC20SafeBurnFromAllowanceRealCrop | safe | slither | 255 | 1 | 0 | 0.252 |
+| OZERC20SafeBurnFromAllowanceRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.361 |
+| OZERC20SafeBurnFromAllowanceRealCrop | safe | gptscan | 0 | 1 | 0 | 2.603 |
+| OZERC20SafePermitTransferRealCrop | safe | slither | 255 | 1 | 0 | 0.245 |
+| OZERC20SafePermitTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 1.766 |
+| OZERC20SafePermitTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 0.626 |
+| OZERC721SafeTransferFromRealCrop | safe | slither | 1 | 1 | 0 | 0.266 |
+| OZERC721SafeTransferFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.573 |
+| OZERC721SafeTransferFromRealCrop | safe | gptscan | 0 | 1 | 0 | 0.792 |
+| OZERC721SafeOperatorTransferRealCrop | safe | slither | 1 | 1 | 0 | 0.233 |
+| OZERC721SafeOperatorTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 1.974 |
+| OZERC721SafeOperatorTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 0.801 |
+| SolmateERC721SafeTransferRealCrop | safe | slither | 1 | 1 | 0 | 0.246 |
+| SolmateERC721SafeTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.668 |
+| SolmateERC721SafeTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 0.744 |
+| OZERC1155SafeTransferRealCrop | safe | slither | 255 | 1 | 0 | 0.269 |
+| OZERC1155SafeTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.215 |
+| OZERC1155SafeTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 2.805 |
+| OZERC1155SafeBatchTransferRealCrop | safe | slither | 255 | 1 | 0 | 0.256 |
+| OZERC1155SafeBatchTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 0.696 |
+| OZERC1155SafeBatchTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 2.638 |
+| OZERC1155SafeOperatorRealCrop | safe | slither | 255 | 1 | 0 | 0.252 |
+| OZERC1155SafeOperatorRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.392 |
+| OZERC1155SafeOperatorRealCrop | safe | gptscan | 0 | 1 | 0 | 2.618 |
+| OZERC4626SafeWithdrawFromRealCrop | safe | slither | 255 | 1 | 0 | 0.234 |
+| OZERC4626SafeWithdrawFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 3.339 |
+| OZERC4626SafeWithdrawFromRealCrop | safe | gptscan | 0 | 1 | 0 | 0.854 |
+| OZERC4626SafeRedeemFromRealCrop | safe | slither | 255 | 1 | 0 | 0.232 |
+| OZERC4626SafeRedeemFromRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.346 |
+| OZERC4626SafeRedeemFromRealCrop | safe | gptscan | 0 | 1 | 0 | 0.804 |
+| AccessControlSafeRoleTransferRealCrop | safe | slither | 255 | 1 | 0 | 0.257 |
+| AccessControlSafeRoleTransferRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 1.686 |
+| AccessControlSafeRoleTransferRealCrop | safe | gptscan | 0 | 1 | 0 | 2.750 |
+| VaultSafeDelegatedWithdrawRealCrop | safe | slither | 255 | 1 | 0 | 0.263 |
+| VaultSafeDelegatedWithdrawRealCrop | safe | smartbugs2_slither | 1 | 1 | 0 | 2.734 |
+| VaultSafeDelegatedWithdrawRealCrop | safe | gptscan | 0 | 1 | 0 | 0.802 |
+| UnauthorizedTokenTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.724 |
+| MissingAllowanceTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.801 |
+| WrongAllowanceOwner | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.798 |
+| OnlyToCheckedTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.675 |
+| PublicBurnFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.758 |
+| UncheckedOperatorTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.578 |
+| BatchTransferFromMissingAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.812 |
+| ApproveAndCallWrongSpender | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.735 |
+| InternalMoveExposed | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.864 |
+| RoleBypassTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 1.230 |
+| PermitNonceMissingTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.804 |
+| DelegatedTransferMissingAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.826 |
+| VaultWithdrawFromMissingAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.691 |
+| NFTTransferFromMissingApproval | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.683 |
+| ERC1155TransferMissingOperator | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.683 |
+| SafeTransferFromWithAllowance | safe | semgrep_custom | 0 | 1 | 1 | 2.920 |
+| SafeBurnFromWithAllowance | safe | semgrep_custom | 0 | 1 | 1 | 2.928 |
+| SafeBatchTransferFrom | safe | semgrep_custom | 0 | 1 | 1 | 2.771 |
+| SafeInternalMove | safe | semgrep_custom | 0 | 1 | 1 | 2.759 |
+| SafeRoleCheckedTransfer | safe | semgrep_custom | 0 | 1 | 1 | 2.660 |
+| OZERC20MissingAllowanceTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.880 |
+| OZERC20WrongAllowanceOwnerRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 1.328 |
+| OZERC20AllowanceNotDecreasedRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.720 |
+| OZERC20PublicBurnFromRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.766 |
+| OZERC20PermitNoSignatureRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.796 |
+| UniswapV2MissingAllowanceTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.779 |
+| UniswapV2WrongAllowanceOwner | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.781 |
+| UniswapV2AllowanceNotDecreased | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.725 |
+| SolmateERC20MissingAllowanceTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.865 |
+| SolmateERC20PublicBurnFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.852 |
+| OZERC721MissingApprovalTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.776 |
+| OZERC721WrongOperatorDirection | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.779 |
+| OZERC721PublicBurnFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 1.262 |
+| SolmateERC721MissingApprovalTransferFrom | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.799 |
+| SolmateERC721WrongOperatorDirection | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.642 |
+| OZERC1155MissingOperatorSafeTransfer | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.792 |
+| OZERC1155WrongOperatorDirection | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.708 |
+| OZERC1155BatchMissingOperatorRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.641 |
+| OZERC4626WithdrawMissingOwnerAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.732 |
+| OZERC4626WithdrawWrongOwnerAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.363 |
+| OZERC4626WithdrawAllowanceNotDecreased | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.869 |
+| AccessControlRoleBypassTransferRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.719 |
+| AccessControlWrongRoleTransferRealCrop | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.682 |
+| CompoundStyleTransferFromWrongSpender | vulnerable | semgrep_custom | 0 | 1 | 1 | 2.753 |
+| AaveVaultWithdrawFromMissingAuth | vulnerable | semgrep_custom | 0 | 1 | 1 | 1.206 |
+| OZERC20SafeTransferFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.725 |
+| UniswapV2SafeTransferFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.758 |
+| SolmateERC20SafeTransferFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.716 |
+| OZERC20SafeBurnFromAllowanceRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.720 |
+| OZERC20SafePermitTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.832 |
+| OZERC721SafeTransferFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.773 |
+| OZERC721SafeOperatorTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.882 |
+| SolmateERC721SafeTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.830 |
+| OZERC1155SafeTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.840 |
+| OZERC1155SafeBatchTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.911 |
+| OZERC1155SafeOperatorRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.840 |
+| OZERC4626SafeWithdrawFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 1.241 |
+| OZERC4626SafeRedeemFromRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.795 |
+| AccessControlSafeRoleTransferRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.905 |
+| VaultSafeDelegatedWithdrawRealCrop | safe | semgrep_custom | 0 | 1 | 1 | 2.902 |

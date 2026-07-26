@@ -1,0 +1,4 @@
+round,report_rate,report_ok,report_n,compile_rate,compile_ok,compile_n,attack_rate,attack_ok,attack_n,repair_rate,repair_ok,repair_n,safe_fp_rate,safe_fp,safe_n
+1,70.00,28,40,87.50,35,40,87.50,35,40,87.50,35,40,60.00,12,20
+2,75.00,30,40,90.00,36,40,90.00,36,40,90.00,36,40,60.00,12,20
+3,75.00,30,40,87.50,35,40,87.50,35,40,87.50,35,40,55.00,11,20

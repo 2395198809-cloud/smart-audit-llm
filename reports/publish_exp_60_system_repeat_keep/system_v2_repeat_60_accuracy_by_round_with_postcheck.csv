@@ -1,0 +1,4 @@
+round,raw_report_rate,raw_report_ok,report_n,postchecked_report_rate,postchecked_report_ok,compile_rate,compile_ok,compile_n,attack_rate,attack_ok,attack_n,repair_rate,repair_ok,repair_n,raw_safe_fp_rate,raw_safe_fp,safe_n,postchecked_safe_fp_rate,postchecked_safe_fp
+1,70.00,28,40,62.50,25,87.50,35,40,87.50,35,40,87.50,35,40,75.00,15,20,10.00,2
+2,75.00,30,40,67.50,27,90.00,36,40,90.00,36,40,90.00,36,40,75.00,15,20,10.00,2
+3,75.00,30,40,67.50,27,87.50,35,40,87.50,35,40,87.50,35,40,80.00,16,20,10.00,2
